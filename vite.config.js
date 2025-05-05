@@ -1,9 +1,10 @@
-// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/', // Set base path for deployment (usually '/' for root custom domain)
+  // --- CHANGE THIS LINE ---
+  base: '/portfolio/', // Set base path for username.github.io/repository-name/ URL
+  // --- END CHANGE ---
 });
