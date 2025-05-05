@@ -65,9 +65,7 @@ function ResumePage() {
         </div>
       </div>
 
-      <p style={{marginTop: '3rem', fontSize: '0.9em', color: '#888'}}>
-        <em>(Ensure PDF files exist at `/public/resumes/TechnicalResume.pdf` and `/public/resumes/NonTechnicalResume.pdf`)</em>
-      </p>
+      
     </section>
   );
 }
