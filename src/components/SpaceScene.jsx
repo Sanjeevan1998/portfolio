@@ -5,10 +5,10 @@ import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 
 //----------------------------------------------------------------------//
-//  3D Scene Component Definitions (Moved from App.jsx)                 //
+//  3D Scene Component Definitions                                      //
 //----------------------------------------------------------------------//
 
-// --- Planet Component ---
+// --- Planet Component --- (No changes needed here)
 function Planet({ textureUrl, name, size = 10, position = [0, 0, 0], rotationSpeed = 0.05 }) {
     const meshRef = useRef();
     const texture = useTexture(textureUrl);
@@ -35,7 +35,7 @@ function Planet({ textureUrl, name, size = 10, position = [0, 0, 0], rotationSpe
     );
 }
 
-// --- Asteroid Field Component ---
+// --- Asteroid Field Component --- (No changes needed here)
 const asteroidGeometry = new THREE.IcosahedronGeometry(1, 0);
 const asteroidMaterial = new THREE.MeshStandardMaterial({ color: '#555555', roughness: 0.8 });
 function Asteroids({ count = 500, volumeMinRadius = 300, volumeMaxRadius = 900 }) {
@@ -63,11 +63,10 @@ function Asteroids({ count = 500, volumeMinRadius = 300, volumeMaxRadius = 900 }
     );
 }
 
-// --- Procedural Stars Component ---
+// --- Procedural Stars Component --- (No changes needed here)
 function ProceduralStars({ count = 5000, radius = 1000, baseSize = 0.05 }) {
     const pointsRef = useRef();
-    // Ensure this path is correct relative to your public folder
-    const particleTexture = useTexture('/textures/particle.png');
+    const particleTexture = useTexture('/textures/particle.png'); // Already using this
     const positions = useMemo(() => {
         const pos = new Float32Array(count * 3);
         const target = new THREE.Vector3();
@@ -109,7 +108,7 @@ function ProceduralStars({ count = 5000, radius = 1000, baseSize = 0.05 }) {
 
 // --- Scene Contents Component ---
 function SceneContents() {
-    const PLANET_COUNT = 10;
+    const PLANET_COUNT = 10; // Keep the number of planets the same for now
     const MIN_PLANET_SIZE = 15;
     const MAX_PLANET_SIZE = 40;
     const MIN_PLACEMENT_RADIUS = 100;
@@ -117,29 +116,74 @@ function SceneContents() {
     const MIN_SEPARATION_BUFFER = 25;
     const MAX_PLACEMENT_ATTEMPTS = 100;
 
-    // Ensure these paths are correct relative to your public folder
+    // --- UPDATED TEXTURE LIST ---
+    // Added more textures from your /public/textures folder
     const planetTextures = [
         "/textures/planet_earth.jpg",
         "/textures/planet_mars_2k.jpg",
         "/textures/planet_jupiter_2k.jpg",
+        "/textures/planet_neptune_2k.jpg",     // Added
+        "/textures/planet_venus_surface.jpg", // Added
+        "/textures/planet4.jpg",              // Added
+        "/textures/planet5.jpg",              // Added
     ];
+    // --- END UPDATE ---
 
+    // Procedurally generate planets only once
     const planets = useMemo(() => {
         const generatedPlanets = [];
         const tempPosition = new THREE.Vector3();
-        if (planetTextures.length === 0) { console.error("Planet Textures array is empty!"); return generatedPlanets; }
+
+        if (planetTextures.length === 0) {
+            console.error("Planet Textures array is empty!");
+            return generatedPlanets;
+        }
+
         for (let i = 0; i < PLANET_COUNT; i++) {
-            let placed = false; const currentSize = MIN_PLANET_SIZE + Math.random() * (MAX_PLANET_SIZE - MIN_PLANET_SIZE);
+            let placed = false;
+            const currentSize = MIN_PLANET_SIZE + Math.random() * (MAX_PLANET_SIZE - MIN_PLANET_SIZE);
+
             for (let attempt = 0; attempt < MAX_PLACEMENT_ATTEMPTS; attempt++) {
                 const r = MIN_PLACEMENT_RADIUS + Math.cbrt(Math.random()) * (MAX_PLACEMENT_RADIUS - MIN_PLACEMENT_RADIUS);
-                const phi = Math.acos(2 * Math.random() - 1); const theta = Math.random() * 2 * Math.PI;
+                const phi = Math.acos(2 * Math.random() - 1);
+                const theta = Math.random() * 2 * Math.PI;
                 tempPosition.setFromSphericalCoords(r, phi, theta);
+
                 let overlaps = false;
-                for (const placedPlanet of generatedPlanets) { const distance = tempPosition.distanceTo(placedPlanet.position); const requiredDistance = currentSize + placedPlanet.size + MIN_SEPARATION_BUFFER; if (distance < requiredDistance) { overlaps = true; break; } }
-                if (!overlaps) { generatedPlanets.push({ id: `planet_${i}`, textureUrl: planetTextures[Math.floor(Math.random() * planetTextures.length)], size: currentSize, position: tempPosition.clone(), rotationSpeed: (Math.random() - 0.5) * 0.06, }); placed = true; break; }
-            } if (!placed) { console.warn(`Could not place planet ${i + 1}.`); }
-        } console.log(`Placed ${generatedPlanets.length} planets.`); return generatedPlanets;
-     }, []); // Empty dependency array: run once
+                for (const placedPlanet of generatedPlanets) {
+                    const distance = tempPosition.distanceTo(placedPlanet.position);
+                    const requiredDistance = currentSize + placedPlanet.size + MIN_SEPARATION_BUFFER;
+                    if (distance < requiredDistance) {
+                        overlaps = true;
+                        break;
+                    }
+                }
+
+                if (!overlaps) {
+                    // Randomly select texture from the updated list
+                    generatedPlanets.push({
+                        id: `planet_${i}`,
+                        textureUrl: planetTextures[Math.floor(Math.random() * planetTextures.length)],
+                        size: currentSize,
+                        position: tempPosition.clone(),
+                        rotationSpeed: (Math.random() - 0.5) * 0.06,
+                    });
+                    placed = true;
+                    break;
+                }
+            }
+
+            if (!placed) {
+                console.warn(`Could not place planet ${i + 1} after ${MAX_PLACEMENT_ATTEMPTS} attempts.`);
+            }
+        }
+        console.log(`Placed ${generatedPlanets.length} planets using ${planetTextures.length} textures.`);
+        return generatedPlanets;
+     // Add planetTextures to dependency array so regeneration happens if list changes (optional)
+     // }, [planetTextures]);
+     // Or keep empty [] if you only want generation once on mount, regardless of texture list changes
+     }, []);
+
 
     return (
         <>
@@ -147,20 +191,25 @@ function SceneContents() {
             <ambientLight intensity={0.8} />
             <pointLight position={[200, 200, 300]} intensity={1.8} color="#aaddff" decay={2} distance={1000} />
             <directionalLight position={[-150, 150, 100]} intensity={1.2} color="#ffffff" />
+
             {/* Stars */}
             <ProceduralStars count={10000} radius={1200} baseSize={0.07} />
             <ProceduralStars count={6000} radius={900} baseSize={0.1} />
-            {/* Planets */}
+
+            {/* Planets (will now use more textures) */}
             {planets.map(planet => <Planet key={planet.id} {...planet} />)}
+
             {/* Asteroids */}
             <Asteroids count={700} volumeMinRadius={150} volumeMaxRadius={1000} />
+
             {/* OrbitControls */}
             <OrbitControls
                 enableDamping dampingFactor={0.05} rotateSpeed={0.3} enableZoom={true}
                 maxDistance={1500} minDistance={30}
                 autoRotate={true} autoRotateSpeed={0.1} enablePan={false}
             />
-            {/* Post-Processing */}
+
+            {/* Post-Processing Effects */}
             <EffectComposer>
                 <Bloom luminanceThreshold={0.6} luminanceSmoothing={0.8} height={400} intensity={0.8} mipmapBlur />
             </EffectComposer>
@@ -168,7 +217,7 @@ function SceneContents() {
     );
 }
 
-// --- Main Canvas Component --- (Exported for use in Layout)
+// --- Main Canvas Component --- (No changes needed here, just exports SceneContents)
 function SpaceBackgroundCanvas() {
     return (
         <Canvas
@@ -192,5 +241,4 @@ function SpaceBackgroundCanvas() {
     );
 }
 
-// Export the main canvas component
 export default SpaceBackgroundCanvas;
