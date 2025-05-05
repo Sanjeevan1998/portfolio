@@ -1,0 +1,43 @@
+/* src/components/Navbar.css */
+.main-nav {
+    padding: 0.75rem 0 0.75rem 0; /* Adjusted padding */
+    text-align: center;
+    /* Lighter border for dark theme */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 0; /* Remove margin, rely on page-content padding */
+    /* Negative margins to allow border to span full width */
+    margin-left: -3rem;
+    margin-right: -3rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    /* Add a subtle background to differentiate nav area slightly */
+    background-color: rgba(25, 28, 32, 0.5); /* Slightly different alpha or shade */
+  }
+  
+  .nav-link {
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+    color: #B0B0B0; /* Slightly dimmer default link color */
+    margin: 0 0.85rem; /* Adjust spacing */
+    padding: 0.75rem 0.25rem; /* More vertical padding, less horizontal */
+    font-weight: 500;
+    position: relative;
+    transition: color 0.25s ease-in-out; /* Smooth transition */
+    display: inline-block; /* Needed for padding */
+    border-bottom: 2px solid transparent; /* Placeholder for active state */
+  }
+  
+  .nav-link:hover {
+    color: #FFFFFF; /* Bright white on hover */
+  }
+  
+  /* Style for the active link */
+  .nav-link.active {
+    color: #61dafb; /* Accent color for active link */
+    font-weight: 700; /* Bold */
+    /* Use border instead of ::after for underline effect */
+    border-bottom-color: #61dafb;
+  }
+  
+  /* Remove the ::after rule if it existed */
+  /* .nav-link.active::after { display: none; } */
