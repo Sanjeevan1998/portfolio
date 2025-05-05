@@ -20,14 +20,12 @@ body {
   line-height: 1.7;
   font-weight: 400;
 
-  /* --- DEFAULT CURSOR (NON-CLICKABLE AREAS) --- */
-  /* Uses the 'cursor' image. */
-  /* !! IMPORTANT: Update '0 0' with correct X Y hotspot coordinates for your RESIZED 'Spaceship--cursor--SweezyCursors.png' image !! */
+  /* --- DEFAULT CURSOR --- */
+  /* !! Update '0 0' with correct X Y hotspot coordinates for RESIZED image !! */
   cursor: url('/cursors/Spaceship--cursor--SweezyCursors.png') 0 0, auto;
-  /* --- END DEFAULT CURSOR --- */
 }
 
-/* Main Application Container (centers content box) */
+/* Main Application Container */
 .app-container {
   width: 100%;
   height: 100%;
@@ -35,18 +33,20 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  /* Add padding for very small screens if box touches edge */
+  padding: 0.5rem;
+  box-sizing: border-box;
 }
 
 /* Content Box Frame Styles - Dark Theme */
 .content-box {
-  background-color: rgba(25, 28, 32, 0.35); /* Dark grey-blue, 85% opaque */
-  /* backdrop-filter: blur(10px) saturate(120%); */ /* Optional: Frosted glass effect */
-  color: #E0E0E0; /* Light grey text color */
+  background-color: rgba(25, 28, 32, 0.85);
+  color: #E0E0E0;
   border-radius: 12px;
-  width: 75%;
-  max-width: 1000px;
-  height: 85vh; /* Fixed height */
-  overflow: hidden; /* Hide scroll from box itself */
+  width: 75%; /* Default width for larger screens */
+  max-width: 1000px; /* Max width for larger screens */
+  height: 85vh; /* Fixed height for larger screens */
+  overflow: hidden;
   position: relative;
   z-index: 10;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
@@ -54,16 +54,18 @@ body {
   text-align: left;
   display: flex;
   flex-direction: column;
+  /* Add transition for smoother size changes if needed */
+  /* transition: width 0.3s ease, height 0.3s ease; */
 }
 
-/* Page Content Area (scrolls within the fixed-height content box) */
+/* Page Content Area */
 .page-content {
-  padding: 1rem 3rem 2.5rem 3rem;
+  padding: 1rem 3rem 2.5rem 3rem; /* Default padding */
   flex-grow: 1;
-  overflow-y: auto; /* Enable scrolling ONLY for this area */
+  overflow-y: auto; /* Enable scrolling */
 }
 
-/* --- Global Styles for elements within .page-content --- */
+/* --- Global Styles within .page-content --- */
 .page-content h1 {
   font-size: 2.2em;
   font-weight: 700;
@@ -81,7 +83,7 @@ body {
   margin-top: 2.5rem;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid rgba(97, 218, 251, 0.5); /* Muted cyan accent */
+  border-bottom: 2px solid rgba(97, 218, 251, 0.5);
 }
 
 .page-content h3 {
@@ -102,35 +104,31 @@ body {
   list-style-type: disc;
 }
 .page-content li::marker {
-   color: rgba(97, 218, 251, 0.7); /* Accent color for list bullets */
+   color: rgba(97, 218, 251, 0.7);
 }
 
-
 .page-content a {
-  color: #61dafb; /* Accent color - Muted Cyan */
+  color: #61dafb;
   text-decoration: none;
   transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
   font-weight: 500;
   /* --- POINTER CURSOR FOR LINKS --- */
-  /* Uses the 'pointer' image. */
-  /* !! IMPORTANT: Update '0 0' with correct X Y hotspot coordinates for your RESIZED 'Spaceship--pointer--SweezyCursors.png' image !! */
+  /* !! Update '0 0' hotspot for RESIZED pointer image !! */
   cursor: url('/cursors/Spaceship--pointer--SweezyCursors.png') 0 0, pointer;
-  /* --- END POINTER CURSOR --- */
 }
 
 .page-content a:hover {
-  color: #90eeff; /* Lighter cyan on hover */
+  color: #90eeff;
   text-decoration: underline;
 }
 
-/* Button / Link-as-Button Styling (Ghost Button Style) */
-/* Targets <button> elements OR any element with class="button-style" */
+/* Button / Link-as-Button Styling */
 .page-content button,
 .page-content .button-style {
   display: inline-block;
   padding: 10px 18px;
   background-color: transparent;
-  color: #61dafb !important; /* Use important if needed to override other styles */
+  color: #61dafb !important;
   text-decoration: none !important;
   border: 1px solid #61dafb;
   border-radius: 6px;
@@ -138,12 +136,10 @@ body {
   text-align: center;
   box-shadow: none;
   transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-  margin-right: 0.5rem; /* Space between buttons if inline */
+  margin-right: 0.5rem;
   /* --- POINTER CURSOR FOR BUTTONS & STYLED LINKS --- */
-  /* Uses the 'pointer' image. */
-  /* !! IMPORTANT: Update '0 0' with correct X Y hotspot coordinates for your RESIZED 'Spaceship--pointer--SweezyCursors.png' image !! */
+  /* !! Update '0 0' hotspot for RESIZED pointer image !! */
   cursor: url('/cursors/Spaceship--pointer--SweezyCursors.png') 0 0, pointer;
-   /* --- END POINTER CURSOR --- */
 }
 
 .page-content button:hover,
@@ -155,75 +151,116 @@ body {
   box-shadow: 0 2px 8px rgba(97, 218, 251, 0.15);
 }
 
-/* --- Scrollbar styling for the page-content area (Dark Theme) --- */
-.page-content::-webkit-scrollbar {
-  width: 10px;
-}
-.page-content::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 10px;
-}
-.page-content::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.25);
-  border-radius: 10px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-.page-content::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.4);
-}
-.page-content {
-  scrollbar-width: thin;
-  /* thumb color, track color */
-  scrollbar-color: rgba(255, 255, 255, 0.25) rgba(255, 255, 255, 0.03);
-}
+/* --- Scrollbar styling --- */
+.page-content::-webkit-scrollbar { width: 10px; }
+.page-content::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); border-radius: 10px; }
+.page-content::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.25); border-radius: 10px; border: 2px solid transparent; background-clip: content-box; }
+.page-content::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.4); }
+.page-content { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.25) rgba(255, 255, 255, 0.03); }
 
-/* --- Project Card Styling (for ProjectsPage.jsx) --- */
-.project-card {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  background-color: rgba(255, 255, 255, 0.03);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.project-card:hover {
-  background-color: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-.project-card h3 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  color: #FFFFFF;
-  font-size: 1.4em;
-  border-bottom: none;
-}
-
-.project-card p {
-  margin-bottom: 1rem;
-  font-size: 0.95em;
-}
-
-.project-card strong {
-  color: #a0a0a0;
-  font-weight: 500;
-}
-
+/* --- Project Card Styling --- */
+.project-card { border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; background-color: rgba(255, 255, 255, 0.03); transition: background-color 0.3s ease, border-color 0.3s ease; }
+.project-card:hover { background-color: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.15); }
+.project-card h3 { margin-top: 0; margin-bottom: 0.5rem; color: #FFFFFF; font-size: 1.4em; border-bottom: none; }
+.project-card p { margin-bottom: 1rem; font-size: 0.95em; }
+.project-card strong { color: #a0a0a0; font-weight: 500; }
 .project-card a {
-   font-weight: 500;
+    font-weight: 500;
     /* --- POINTER CURSOR FOR LINKS IN CARDS --- */
-    /* Uses the 'pointer' image. */
-    /* !! IMPORTANT: Update '0 0' with correct X Y hotspot coordinates for your RESIZED 'Spaceship--pointer--SweezyCursors.png' image !! */
+    /* !! Update '0 0' hotspot for RESIZED pointer image !! */
     cursor: url('/cursors/Spaceship--pointer--SweezyCursors.png') 0 0, pointer;
-    /* --- END POINTER CURSOR --- */
 }
 
-/* --- Navbar Link Cursor Override --- */
-/* Ensure NavLinks also use the pointer cursor */
+/* --- Navbar Styles (Imported or defined separately) --- */
+/* Assuming Navbar.css handles its own cursor */
+/* If not, add this rule for nav links specifically if needed */
 .main-nav .nav-link {
-    /* Uses the 'pointer' image. */
-    /* !! IMPORTANT: Update '0 0' with correct X Y hotspot coordinates for your RESIZED 'Spaceship--pointer--SweezyCursors.png' image !! */
+    /* Uses the 'pointer' image. Update X Y hotspot for RESIZED image! */
     cursor: url('/cursors/Spaceship--pointer--SweezyCursors.png') 0 0, pointer;
 }
+
+
+/* ============================================ */
+/* --- Mobile Quick Fixes (Media Query) --- */
+/* ============================================ */
+@media (max-width: 768px) { /* Target tablets and smaller devices */
+
+  .app-container {
+    padding: 0.25rem; /* Reduce outer padding further */
+    align-items: flex-start; /* Align box to top */
+    /* Allow slight vertical scrolling on main page if needed */
+    /* overflow-y: auto; */
+    /* height: auto; */
+  }
+
+  .content-box {
+    width: 95%; /* Make box wider */
+    height: auto; /* Let content define height */
+    max-height: 90vh; /* Still prevent excessive height */
+    /* Adjust vertical positioning if needed */
+    margin-top: 2vh; /* Add some space from top */
+    margin-bottom: 2vh;
+  }
+
+  .page-content {
+    /* Reduce horizontal padding significantly */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    /* Adjust top/bottom padding */
+    padding-top: 0.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  /* Reduce heading sizes */
+  .page-content h1 {
+    font-size: 1.8em;
+    margin-bottom: 1rem;
+  }
+  .page-content h2 {
+    font-size: 1.4em;
+    margin-top: 2rem;
+  }
+  .page-content h3 {
+    font-size: 1.15em;
+    margin-top: 1.5rem;
+  }
+
+  /* Adjust navbar link spacing if needed */
+  .main-nav .nav-link {
+     margin: 0 0.5rem; /* Slightly less space between nav links */
+     font-size: 0.9em; /* Slightly smaller nav text */
+  }
+   /* Counteract parent padding for nav border */
+  .main-nav {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+
+  /* Ensure project cards stack nicely */
+  .project-card {
+     padding: 1rem; /* Slightly less padding inside cards */
+  }
+  .project-card h3 {
+      font-size: 1.2em;
+  }
+
+   /* Ensure skills columns stack */
+   /* Target specific container if needed, or rely on flex-wrap */
+   /* Example: If skills were in .skills-container */
+   /* .skills-container { flex-direction: column; } */
+
+
+   /* Make buttons slightly smaller if needed */
+   .page-content button,
+   .page-content .button-style {
+      padding: 8px 14px;
+      font-size: 0.95em;
+   }
+
+}
+
+/* Optional: Add another breakpoint for very small phones if needed */
+/* @media (max-width: 480px) { ... } */
