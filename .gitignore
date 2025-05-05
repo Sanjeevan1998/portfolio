@@ -123,6 +123,7 @@ build/
 # Build output directory
 /dist
 /dist-ssr
+/docs/
 
 # Editor directories and files
 .vscode/*
