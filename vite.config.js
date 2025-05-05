@@ -4,11 +4,10 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // Base path for username.github.io/repository-name/ URL
-  base: '/portfolio/',
-  // --- ADD THIS BUILD SECTION ---
+  // --- CHANGE THIS LINE BACK ---
+  base: '/', // Set base path back to root for the custom domain
+  // --- END CHANGE ---
   build: {
-    outDir: 'docs', // Output directory changed from 'dist' to 'docs'
+    outDir: 'docs', // Keep output directory as docs
   },
-  // --- END BUILD SECTION ---
 });
